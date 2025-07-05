@@ -12,16 +12,16 @@ export function setupInputListeners(callbacks) {
 
         switch (event.key) {
             case "ArrowRight":
-                if (callbacks.direction !== 'left') callbacks.onDirectionChange(10, 0, 'right');
+                callbacks.onDirectionChange(10, 0, 'right');
                 break;
             case "ArrowLeft":
-                if (callbacks.direction !== 'right') callbacks.onDirectionChange(-10, 0, 'left');
+                callbacks.onDirectionChange(-10, 0, 'left');
                 break;
             case "ArrowUp":
-                if (callbacks.direction !== 'down') callbacks.onDirectionChange(0, -10, 'up');
+                callbacks.onDirectionChange(0, -10, 'up');
                 break;
             case "ArrowDown":
-                if (callbacks.direction !== 'up') callbacks.onDirectionChange(0, 10, 'down');
+                callbacks.onDirectionChange(0, 10, 'down');
                 break;
         }
     });
