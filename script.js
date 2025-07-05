@@ -4,6 +4,11 @@ document.addEventListener("keydown",function(event){
     }
 })
 
+function restartGame(){
+    window.location.href="game.html";
+}
+
+const playerName = localStorage.getItem("playerName");
 
 let canvas = document.getElementById("gameCanvas");
 let ctx = canvas.getContext("2d");
@@ -25,6 +30,8 @@ let nFruits = 0;
 let score = 0;
 let direction = '';
 let gameStarted = false;
+
+const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
 
 document.addEventListener("keydown",function(event){
 
@@ -95,7 +102,6 @@ function gameLoop(){
         y + size > fruit.y){
             nFruits++;
             score += 100;
-            console.log("Yummy");
             fruit = getRandomPosition();
     }else{
         if(snake.length > nFruits+1){
@@ -104,16 +110,36 @@ function gameLoop(){
     }
 
     if(x < 0 || x >= canvasWidth || y < 0 || y >= canvasHeight){
-        console.log("Game Over");
+
+        
+        const newEntry = {name : playerName, score : score};
+
+        highScores.push(newEntry);
+        highScores.sort((a,b) => b.score - a.score);
+        highScores.splice(10);
+
+        localStorage.setItem("highScores",JSON.stringify(highScores));
+
         document.getElementById("gameOver").style.display="block";
+        document.getElementById("retryButton").style.display = "inline-block";
         clearInterval(gameInterval);
         return;
     }
 
     for(let i = 1; i < snake.length; i++){
         if(snake[i].x == snake[0].x && snake[i].y == snake[0].y){
-            console.log("Game Over");
+
+            
+            const newEntry = {name : playerName, score : score};
+
+            highScores.push(newEntry);
+            highScores.sort((a,b) => b.score - a.score);
+            highScores.splice(10);
+
+            localStorage.setItem("highScores",JSON.stringify(highScores));
+
             document.getElementById("gameOver").style.display="block";
+            document.getElementById("retryButton").style.display = "inline-block";
             clearInterval(gameInterval);
             return;
         }
@@ -132,3 +158,4 @@ function gameLoop(){
     document.getElementById("scoreDisplay").textContent = "Score: " + score;
 
 }
+

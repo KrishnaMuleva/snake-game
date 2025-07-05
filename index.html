@@ -11,9 +11,45 @@
 
         <hr>
 
+        <label for="playerName">Enter Your Name : </label>
+        <input type="text" id="playerName">
+
         <p>Press START To Begin</p>
 
-        <button onclick="location.href='game.html'">START</button>
+        <button onclick="startGame()">START</button>
+
+        <br>
+
+        <h3>Top Scores</h3>
+        <ol id="leaderboard"></ol>
+
+        <script>
+            function startGame(){
+                const name = document.getElementById("playerName").value.trim();
+
+                if(name === ""){
+                    alert("please enter name");
+                    return;
+                }
+
+                localStorage.setItem("playerName", name);
+
+                window.location.href = "game.html";
+
+            }
+        </script>
+
+        <script>
+            const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+            const leaderboard = document.getElementById("leaderboard");
+
+            highScores.forEach(entry => {
+                const item = document.createElement("li");
+                item.textContent = `${entry.name} : ${entry.score}`;
+                leaderboard.appendChild(item);
+            });
+
+        </script>
 
     </body>
 
