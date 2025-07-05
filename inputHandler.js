@@ -1,27 +1,29 @@
 export function setupInputListeners(callbacks) {
     document.addEventListener("keydown", function (event) {
+        if (!callbacks) return;
+
         if (event.key === "Escape") {
             callbacks.onEscape();
         }
 
-        if (!callbacks) return;
-
-        if (!callbacks.started && ["ArrowUp", "ArrowDown", "ArrowRight", "ArrowLeft"].includes(event.key)) {
+        if (!callbacks.started && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
             callbacks.onStart();
         }
 
+        const currentDirection = callbacks.getDirection(); // ✅ get current direction
+
         switch (event.key) {
             case "ArrowRight":
-                callbacks.onDirectionChange(10, 0, 'right');
+                if (currentDirection !== 'left') callbacks.onDirectionChange(10, 0, 'right');
                 break;
             case "ArrowLeft":
-                callbacks.onDirectionChange(-10, 0, 'left');
+                if (currentDirection !== 'right') callbacks.onDirectionChange(-10, 0, 'left');
                 break;
             case "ArrowUp":
-                callbacks.onDirectionChange(0, -10, 'up');
+                if (currentDirection !== 'down') callbacks.onDirectionChange(0, -10, 'up');
                 break;
             case "ArrowDown":
-                callbacks.onDirectionChange(0, 10, 'down');
+                if (currentDirection !== 'up') callbacks.onDirectionChange(0, 10, 'down');
                 break;
         }
     });

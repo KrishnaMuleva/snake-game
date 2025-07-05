@@ -84,6 +84,17 @@ function checkSelfCollision() {
     return false;
 }
 
+function getDirection() {
+    return direction;
+}
+
+function setDirection(newDx, newDy, newDirection) {
+    dx = newDx;
+    dy = newDy;
+    direction = newDirection;
+}
+
+
 setupInputListeners({
     onStart: () => {
         if (!gameStarted) {
@@ -91,21 +102,9 @@ setupInputListeners({
             gameLoop();
         }
     },
-    onDirectionChange: (newDx, newDy, newDirection) => {
-        // prevent reversing direction
-        const opposites = {
-            up: 'down',
-            down: 'up',
-            left: 'right',
-            right: 'left'
-        };
-
-        if (direction !== opposites[newDirection]) {
-            dx = newDx;
-            dy = newDy;
-            direction = newDirection;
-        }
-    },
-    onEscape: () => window.location.href = "index.html"
+    onDirectionChange: setDirection,
+    onEscape: () => window.location.href = "index.html",
+    getDirection: getDirection
 });
+
 
